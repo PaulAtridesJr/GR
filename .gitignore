@@ -1,0 +1,9 @@
+*.o
+*.pb.cc
+*.pb.h
+.vs/
+.vscode/
+out/
+bin/
+obj/
+
