@@ -95,7 +95,9 @@ find_package(Threads REQUIRED)
 
   # Find Protobuf installation
   # Looks for protobuf-config.cmake file installed by Protobuf's cmake installation.
-  set(protobuf_MODULE_COMPATIBLE TRUE)
+ # set(protobuf_MODULE_COMPATIBLE TRUE)
+
+  set(Protobuf_DIR "c:\\Program Files\\grpc\\cmake")
   find_package(Protobuf CONFIG REQUIRED)
   message(STATUS "Using protobuf ${Protobuf_VERSION}")
 
@@ -107,8 +109,12 @@ find_package(Threads REQUIRED)
     set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
   endif()
 
+ set(absl_DIR "c:\\Program Files\\grpc\\lib\\cmake\\absl")
+ find_package(absl CONFIG REQUIRED)
+
   # Find gRPC installation
   # Looks for gRPCConfig.cmake file installed by gRPC's cmake installation.
+  # set(gRPC_DIR "c:\\Code\\vcpkg\\installed\\x64-windows\\share\\grpc")
   find_package(gRPC CONFIG REQUIRED)
   message(STATUS "Using gRPC ${gRPC_VERSION}")
 

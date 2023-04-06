@@ -6,4 +6,6 @@
 out/
 bin/
 obj/
+build/
+.build/
 
