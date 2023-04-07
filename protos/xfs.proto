@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package xfs;
+
+// The XFS emulator service definition for SPI.
+service XFSEmulatorSPI {
+    // msxfs.dll make a rpc request to XFSEmulator - EXEC
+    //      HRESULT extern WINAPI WFPExecute 
+    //      ( HSERVICE hService, DWORD dwCommand, LPVOID lpCmdData, DWORD dwTimeOut, HWND hWnd, REQUESTID ReqID);
+    rpc WFPExecute (WFPRequest) returns (WFPReply) {}
+
+    // msxfs.dll make a rpc request to XFSEmulator - INFO
+    //      HRESULT extern WINAPI WFPGetInfo 
+    //      ( HSERVICE hService, DWORD dwCategory, LPVOID lpQueryDetails, DWORD dwTimeOut, HWND hWnd, REQUESTID ReqID);
+    rpc WFPGetInfo (WFPRequest) returns (WFPReply) {}
+
+    // msxfs.dll make a rpc request to XFSEmulator to cancel current sync EXEC command
+    //      HRESULT extern WINAPI WFSCancelBlockingCall ( DWORD dwThreadID);
+    rpc WFSCancelBlockingCall (WFSCancelRequest) returns (Empty) {}
+
+    // XFSEmulator make a rpc request to msxfs.dll with XFS EVENT data
+    rpc WFSEvent (WFSEventRequest) returns (Empty) {}
+  }
+  
+  // The request message for EXEC XFS command
+  message WFPRequest {
+    int32 request_id = 1;   
+    int32 command_code = 2;
+    string service_name = 3;
+    oneof pointer_to_data
+    { 
+        fixed32 pointer_to_data_x86 = 4;
+        fixed64 pointer_to_data_x64 = 5;
+    }// IntPtr
+  }
+  
+  // The response message
+  message WFPReply {
+    int32 request_id = 1;   
+    int32 result = 2;  // WFS result code
+    oneof pointer_to_data
+    { 
+        fixed32 pointer_to_data_x86 = 3;
+        fixed64 pointer_to_data_x64 = 4;
+    }// IntPtr
+  }
+
+  // The response message
+  message WFSEventRequest {
+    int32 event_id = 1;   
+    string service_name = 2;  // WFS result code
+    oneof pointer_to_data
+    { 
+        fixed32 pointer_to_data_x86 = 3;
+        fixed64 pointer_to_data_x64 = 4;
+    }// IntPtr
+  }
+
+  message WFSCancelRequest {
+    string service_name = 1; 
+  }
+
+// A generic empty message that you can re-use to avoid defining duplicated
+// empty messages in your APIs.
+message Empty {
+
+}
+
